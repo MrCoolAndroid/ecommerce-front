@@ -1,0 +1,29 @@
+services:
+  api:
+    image: mrcoolandroid/ecommerce-api:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/ecommerce_db
+      - JWT_SECRET=
+      - NODE_ENV=production
+    depends_on:
+      - mongo
+
+  frontend:
+    build: .
+    ports:
+      - "52577:52577"
+    environment:
+      - REACT_APP_API_URL=http://api:3000
+
+  mongo:
+    image: mongo:6
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
