@@ -3,7 +3,8 @@ import { Navbar as BootstrapNavbar, Nav, Container, Button } from 'react-bootstr
 import useAuthStore from '../stores/AuthStore';
 
 const Navbar = () => {
-    const { token, logout } = useAuthStore();
+    const token = useAuthStore(state => state.token);
+    const logout = useAuthStore(state => state.logout);
     const navigate = useNavigate();
 
     const handleLogout = () => {

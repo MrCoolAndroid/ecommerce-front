@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface AuthState {
     token: string | null;
@@ -6,18 +7,24 @@ interface AuthState {
     logout: () => void;
 }
 
-const useAuthStore = create<AuthState>((set) => ({
-    token: localStorage.getItem('token') || null,
+const useAuthStore = create<AuthState>()(
+    persist(
+        (set) => ({
+            token: null,
 
-    login: (token: string) => {
-        localStorage.setItem('token', token);
-        set({ token });
-    },
+            login: (token: string) => {
+                set({ token });
+            },
 
-    logout: () => {
-        localStorage.removeItem('token');
-        set({ token: null });
-    }
-}));
+            logout: () => {
+                set({ token: null });
+            },
+        }),
+        {
+            name: 'auth',
+        }
+    )
+);
 
 export default useAuthStore;
+

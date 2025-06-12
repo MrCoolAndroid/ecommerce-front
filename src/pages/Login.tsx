@@ -1,26 +1,38 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login as loginService } from '../services/AuthService';
-import useAuthStore from '../stores/authStore';
+import useAuthStore from '../stores/AuthStore';
 import { Form, Button, Container } from 'react-bootstrap';
+import useToastStore from '../stores/ToastStore';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { login } = useAuthStore();
     const navigate = useNavigate();
+    const showToast = useToastStore((state) => state.showToast);
+    const token = useAuthStore(state => state.token);
+
+    useEffect(() => {
+        if (token) {
+            navigate('/dashboard', { replace: true });
+        }
+    }, [token, navigate]);
 
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         try {
-            const { token } = await loginService(email, password);
-            login(token);
+            const response = await loginService(email, password);
+            login(response.data.token);
+            showToast('Inicio de sesion exitoso', 'success');
             navigate('/dashboard');
-        } catch (error) {
-            console.error('Error al iniciar sesión:', error);
-            // Tirar error distinto dependiendo del status code (usar un toast)
-            //alert('Credenciales inválidas');
-            alert('Error: ' + error);
+        } catch (error : any) {
+            if (error.response.data.error === "Validation errors") {
+                showToast('Datos invalidos. Por favor, revisa tu email y contrasena.', 'danger');
+            }
+            else {
+                showToast('Error al iniciar sesion. Por favor, intenta de nuevo.', 'danger');
+            }
         }
     };
 
