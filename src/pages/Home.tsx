@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import useAuthStore from '../stores/AuthStore';
 import './Home.module.css';
 
-// Utilizar los modules
 const Home = () => {
     const { token } = useAuthStore();
     
@@ -12,7 +11,7 @@ const Home = () => {
             <h1>Bienvenido a Mi E-Commerce</h1>
             <p>Gestion de productos, usuarios y pedidos con autenticacion y control de acceso.</p>
             {token ? (
-                <p className="mt-4">Estas autenticado. Puedes ir al <Link to="/dashboard">Dashboard</Link>.</p>
+                <p className="mt-4">Estas autenticado</p>
             ) : (
                     <div className="mt-4">
                         <Link to="/login">

@@ -15,7 +15,7 @@ const Login = () => {
 
     useEffect(() => {
         if (token) {
-            navigate('/dashboard', { replace: true });
+            navigate('/', { replace: true });
         }
     }, [token, navigate]);
 
@@ -25,7 +25,7 @@ const Login = () => {
             const response = await loginService(email, password);
             login(response.data.token);
             showToast('Inicio de sesion exitoso', 'success');
-            navigate('/dashboard');
+            navigate('/');
         } catch (error : any) {
             if (error.response.data.error === "Validation errors") {
                 showToast('Datos invalidos. Por favor, revisa tu email y contrasena.', 'danger');

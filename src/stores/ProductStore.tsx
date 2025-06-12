@@ -24,12 +24,8 @@ const useProductStore = create<ProductState>((set) => ({
     filteredProducts: [],
 
     fetchProducts: async () => {
-        try {
-            const response = await axios.get<Product[]>(`${API_URL}/products`);
-            set({ products: response.data, filteredProducts: response.data });
-        } catch (error) {
-            console.error('Error al obtener productos:', error);
-        }
+        const response = await axios.get<Product[]>(`${API_URL}/products`);
+        set({ products: response.data, filteredProducts: response.data });
     },
 
     filterProducts: (searchTerm: string) => {

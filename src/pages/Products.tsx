@@ -1,15 +1,29 @@
 import { useEffect, useState } from 'react';
 import useProductStore from '../stores/ProductStore';
 import { Card, Button, Form } from 'react-bootstrap';
-import styles from './Dashboard.module.css';
+import { useNavigate } from 'react-router-dom';
+import useToastStore from '../stores/ToastStore';
+import styles from './Products.module.css';
 
-const Dashboard = () => {
+const Products = () => {
     const { fetchProducts, filteredProducts, filterProducts } = useProductStore();
     const [search, setSearch] = useState('');
+    const navigate = useNavigate();
+    const showToast = useToastStore((state) => state.showToast);
 
     useEffect(() => {
-        fetchProducts();
-    }, [fetchProducts]);
+        const fetchData = async () => {
+            try {
+                await fetchProducts();
+            } catch (error: any) {
+                if (error.response && error.response.status === 401) {
+                    showToast('Permiso denegado.', 'danger');
+                    navigate('/');
+                }
+            }
+        };
+        fetchData();
+    }, [fetchProducts, navigate, showToast]);
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -19,7 +33,7 @@ const Dashboard = () => {
 
     return (
         <div className={styles.dashboardContainer}>
-            <h1 className="mb-4">Dashboard de Productos</h1>
+            <h1 className="mb-4">Panel de productos</h1>
 
             <Form.Group className="mb-3" controlId="search">
                 <Form.Control
@@ -50,4 +64,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Products;

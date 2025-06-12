@@ -16,7 +16,7 @@ const Register = () => {
 
     useEffect(() => {
         if (token) {
-            navigate('/dashboard', { replace: true });
+            navigate('/', { replace: true });
         }
     }, [token, navigate]);
 
@@ -26,9 +26,8 @@ const Register = () => {
             const response = await registerService(name, email, password);
             login(response.data.token);
             showToast('Registro exitoso', 'success');
-            navigate('/dashboard');
-        } catch (error) {
-            console.log(error);
+            navigate('/');
+        } catch (error : any) {
             if (error.response.data.error === "E-mail already registered") {
                 showToast('El e-mail ingresado ya esta en uso.', 'danger');
             }

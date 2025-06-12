@@ -5,7 +5,9 @@ import useToastStore from './stores/ToastStore';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
+import Products from './pages/Products';
+import Orders from './pages/Orders';
+import NoMatch from './pages/NoMatch';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -41,14 +43,20 @@ function App() {
             <NavBar />
             <GlobalToast />
             <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={
-                <ProtectedRoute>
-                    <Dashboard />
-                </ProtectedRoute>
-            } />
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/products" element={
+                    <ProtectedRoute>
+                        <Products />
+                    </ProtectedRoute>
+                }/>
+                <Route path="/orders" element={
+                    <ProtectedRoute>
+                        <Orders />
+                    </ProtectedRoute>
+                } />
+                <Route path="*" element={<NoMatch />} />
             </Routes>
         </>
     );

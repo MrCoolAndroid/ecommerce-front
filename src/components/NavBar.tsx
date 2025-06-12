@@ -20,7 +20,8 @@ const Navbar = () => {
                 <BootstrapNavbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/">Inicio</Nav.Link>
-                        {token && <Nav.Link as={Link} to="/dashboard">Panel de control</Nav.Link>}
+                        {token && <Nav.Link as={Link} to="/products">Productos</Nav.Link>}
+                        {token && <Nav.Link as={Link} to="/orders">Pedidos</Nav.Link>}
                     </Nav>
                     <Nav>
                         {token ? (
