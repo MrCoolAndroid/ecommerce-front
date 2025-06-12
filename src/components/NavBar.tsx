@@ -19,15 +19,15 @@ const Navbar = () => {
                 <BootstrapNavbar.Toggle aria-controls="basic-navbar-nav" />
                 <BootstrapNavbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link as={Link} to="/">Home</Nav.Link>
-                        {token && <Nav.Link as={Link} to="/dashboard">Dashboard</Nav.Link>}
+                        <Nav.Link as={Link} to="/">Inicio</Nav.Link>
+                        {token && <Nav.Link as={Link} to="/dashboard">Panel de control</Nav.Link>}
                     </Nav>
                     <Nav>
                         {token ? (
                             <Button variant="outline-light" onClick={handleLogout}>Cerrar Sesion</Button>
                         ) : (
                             <>
-                                <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                                <Nav.Link as={Link} to="/login">Iniciar sesion</Nav.Link>
                                 <Nav.Link as={Link} to="/register">Registro</Nav.Link>
                             </>
                         )}
