@@ -9,6 +9,7 @@ const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isAdmin, setIsAdmin] = useState(false);
     const { login } = useAuthStore();
     const navigate = useNavigate();
     const showToast = useToastStore((state) => state.showToast);
@@ -23,7 +24,8 @@ const Register = () => {
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         try {
-            const response = await registerService(name, email, password);
+            let role = isAdmin ? 'admin' : 'user';
+            const response = await registerService(name, email, password, role);
             login(response.data.token, response.data.user.id);
             showToast('Registro exitoso', 'success');
             navigate('/');
@@ -68,6 +70,10 @@ const Register = () => {
                     <Form.Label>Contrasena</Form.Label>
                     <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     <Form.Text>Debe contener un minimo de 6 caracteres.</Form.Text>
+                </Form.Group>
+
+                <Form.Group controlId="formBasicCheckbox" className="mt-3">
+                    <Form.Check type="checkbox" checked={isAdmin} onChange={(e) => setIsAdmin(e.target.checked)} label="Es admin?" />
                 </Form.Group>
 
                 <Button variant="success" type="submit" className="mt-4">Registrarse</Button>

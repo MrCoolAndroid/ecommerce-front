@@ -25,7 +25,7 @@ const useProductStore = create<ProductState>((set) => ({
     filteredProducts: [],
 
     fetchProducts: async (token: string) => {
-        const response = await axios.get<Product[]>(`${API_URL}/products`, {
+        const response = await axios.get(`${API_URL}/products`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

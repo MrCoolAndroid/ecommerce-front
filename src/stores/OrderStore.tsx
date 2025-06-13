@@ -28,7 +28,7 @@ const useOrderStore = create<OrderState>((set) => ({
     filteredOrders: [],
 
     fetchOrders: async (token: string) => {
-        const response = await axios.get<Order[]>(`${API_URL}/orders`, {
+        const response = await axios.get(`${API_URL}/orders`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -38,9 +38,9 @@ const useOrderStore = create<OrderState>((set) => ({
 
     filterOrders: (searchTerm: string) => {
         set((state) => ({
-            //filteredOrders: state.orders.filter((order) =>
-                //order.name.toLowerCase().includes(searchTerm.toLowerCase())
-            //)
+            filteredOrders: state.orders.filter((order) =>
+                order.status.toLowerCase().includes(searchTerm.toLowerCase())
+            )
         }));
     }
 }));
