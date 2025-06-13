@@ -34,7 +34,7 @@ function App() {
             if (isExpired) {
                 logout();
                 navigate('/login', { replace: true });
-                showToast('Sesión expirada. Por favor, inicia sesión de nuevo.', 'warning');
+                showToast('Sesion expirada. Por favor, inicia sesion de nuevo.', 'warning');
             }
         }
     }, [token, logout, navigate]);

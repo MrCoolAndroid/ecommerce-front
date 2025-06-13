@@ -24,18 +24,27 @@ const Register = () => {
         e.preventDefault();
         try {
             const response = await registerService(name, email, password);
-            login(response.data.token);
+            login(response.data.token, response.data.user.id);
             showToast('Registro exitoso', 'success');
             navigate('/');
-        } catch (error : any) {
-            if (error.response.data.error === "E-mail already registered") {
-                showToast('El e-mail ingresado ya esta en uso.', 'danger');
-            }
-            else if (error.response.data.error === "Validation errors") {
-                showToast('Datos invalidos. Por favor, revisa tus datos e intenta de nuevo.', 'danger');
-            }
-            else {
-                showToast('Error al iniciar sesion. Por favor, intenta de nuevo.', 'danger');
+        } catch (error: any) {
+            if (error) {
+                if (error.code === 'ERR_NETWORK') {
+                    showToast('Error al registrarse. Por favor, intenta de nuevo mas tarde.', 'danger');
+                    return;
+                }
+                if (error.response.data.error === "E-mail already registered") {
+                    showToast('El e-mail ingresado ya esta en uso.', 'danger');
+                    return;
+                }
+                else if (error.response.data.error === "Validation errors") {
+                    showToast('Datos invalidos. Por favor, revisa tus datos e intenta de nuevo.', 'danger');
+                    return;
+                }
+                else {
+                    showToast('Error al registrarse. Por favor, intenta de nuevo.', 'danger');
+                    return;
+                }
             }
         }
     };

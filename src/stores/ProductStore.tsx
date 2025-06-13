@@ -5,6 +5,7 @@ interface Product {
     _id: string;
     name: string;
     description: string;
+    category: string;
     price: number;
     stock: number;
     image?: string;
@@ -13,7 +14,7 @@ interface Product {
 interface ProductState {
     products: Product[];
     filteredProducts: Product[];
-    fetchProducts: () => Promise<void>;
+    fetchProducts: (token: string) => Promise<void>;
     filterProducts: (searchTerm: string) => void;
 }
 
@@ -23,9 +24,13 @@ const useProductStore = create<ProductState>((set) => ({
     products: [],
     filteredProducts: [],
 
-    fetchProducts: async () => {
-        const response = await axios.get<Product[]>(`${API_URL}/products`);
-        set({ products: response.data, filteredProducts: response.data });
+    fetchProducts: async (token: string) => {
+        const response = await axios.get<Product[]>(`${API_URL}/products`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        set({ products: response.data.data, filteredProducts: response.data.data });
     },
 
     filterProducts: (searchTerm: string) => {

@@ -23,15 +23,31 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await loginService(email, password);
-            login(response.data.token);
+            login(response.data.token, response.data.user.id);
             showToast('Inicio de sesion exitoso', 'success');
             navigate('/');
-        } catch (error : any) {
-            if (error.response.data.error === "Validation errors") {
-                showToast('Datos invalidos. Por favor, revisa tu email y contrasena.', 'danger');
+        } catch (error: any) {
+            if (error) {
+                if (error.code === 'ERR_NETWORK') {
+                    showToast('Error al iniciar sesion. Por favor, intenta de nuevo mas tarde.', 'danger');
+                    return;
+                }
+                if (error.response.data.error === "Validation errors") {
+                    showToast('Datos invalidos. Por favor, revisa tu email y contrasena.', 'danger');
+                    return;
+                }
+                if (error.response.data.error === "Invalid credentials") {
+                    showToast('Credenciales invalidas. Por favor, revisa tu email y contrasena.', 'danger');
+                    return;
+                }
+                else {
+                    showToast('Error al iniciar sesion. Por favor, intenta de nuevo.', 'danger');
+                    return;
+                }
             }
             else {
                 showToast('Error al iniciar sesion. Por favor, intenta de nuevo.', 'danger');
+                return;
             }
         }
     };
